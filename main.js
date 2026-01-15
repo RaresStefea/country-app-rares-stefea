@@ -2,7 +2,7 @@ document.title = "Country Info";
 
 const body = document.body;
 body.style.cssText = "background-color:#f0f0f0;font-family:Arial,sans-serif;margin:0;";
-
+//test push
 const headDiv = document.createElement('div');
 headDiv.style.cssText = "height:100px;";
 body.appendChild(headDiv);
