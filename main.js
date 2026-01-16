@@ -74,14 +74,16 @@ function searchByName(query) {
     flagDiv.innerHTML = "";
     return;
   }
-
+  searchResultDiv.style.display = "flex";
+    infoDiv.innerHTML = "Loading...";
+    flagDiv.innerHTML = "";
   const endpoint = `https://restcountries.com/v3.1/name/${encodeURIComponent(q)}?fullText=true&fields=name,capital,region,flags`;
 
   fetch(endpoint)
     .then(response => {
       if (!response.ok) {
-        searchResultDiv.style.display = "none";
-        infoDiv.innerHTML = "";
+        searchResultDiv.style.display = "flex";
+        infoDiv.innerHTML = "Country not found.";
         flagDiv.innerHTML = "";
         return Promise.reject("Not found");
       }

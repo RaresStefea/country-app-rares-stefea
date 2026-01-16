@@ -1,6 +1,6 @@
 # TODOS
 
-- Add **Loading** and **Not found** frontend messages.
+- ~~Add **Loading** and **Not found** frontend messages.~~
 - Add **Top Recently viewed** feature using localStorage display as pills with country name.
 - Search on at least 3 characters typed.
 - Create favorite button for search result card
