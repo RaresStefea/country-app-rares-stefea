@@ -1,51 +1,18 @@
-import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper, searchButton, searchInput } from "../frontend.js";
+import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper } from "../frontend.js";
+import { getRecentCountries, saveRecentCountry } from "./recent-storing.js";
 
 export const listEndpoint = "https://restcountries.com/v3.1/independent";
 
-const storageKey = "recentCountries";
-const maxStorage = 5;
 
-// split recents into different module same with favorite and with the OG search
-function getRecentCountries() {
-  try {
-    const obj = localStorage.getItem(storageKey);
-    const array = JSON.parse(obj);
-    return Array.isArray(array) ? array : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveRecentCountry(name) {
-  if (!name)
-     return;
-  
-  const trimmed = name.trim();
-  
-  if (!trimmed) 
-    return;
-
-  let list = getRecentCountries();
-
-  list = list.filter(c => c.toLowerCase() !== trimmed.toLowerCase());
-
-  list.unshift(trimmed);
-
-  if (list.length > maxStorage)
-     list = list.slice(0, maxStorage);
-
-  localStorage.setItem(storageKey, JSON.stringify(list));
-}
-
+//TODO: Error checking for fetches
 export function renderRecentPills() {
   recentDivWrapper.innerHTML = "";
-
   const recent = getRecentCountries();
 
   recent.forEach(name => {
     const pill = document.createElement('button');
     pill.textContent = name;
-    pill.style.cssText ="margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1);"
+    pill.style.cssText ="margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1); cursor:pointer;";
     recentDivWrapper.appendChild(pill);
   });
 }
@@ -57,7 +24,7 @@ export function loadCountryList() {
       data.forEach(country => {
         const li = document.createElement("li");
         li.style.cssText = "margin:0 0 12px 0; text-align:center; color:#333;";
-        li.textContent = `Country: ${country.name.common} | Capital: ${country.capital[0]} | Region: ${country.region}`;
+        li.textContent = `Country: ${country.name.common} | Capital: ${country.capital?.[0] || 'N/A'} | Region: ${country.region}`;
         apiList.appendChild(li);
       });
     });
@@ -72,7 +39,7 @@ export function searchByName(query) {
     flagDiv.innerHTML = "";
     return;
   }
-  // check 3 chars full list returns *ita*
+  
   if (q.length < 3) {
     searchResultDiv.style.display = "flex";
     infoDiv.innerHTML = "Please enter at least 3 characters.";
@@ -102,7 +69,7 @@ export function searchByName(query) {
         searchResultDiv.style.display = "flex";
         infoDiv.innerHTML = "";
         flagDiv.innerHTML = "";
-        //clone node instead of create element each time
+
         const title = document.createElement('h2');
         title.textContent = country.name.common;
         title.style.cssText = "margin:0; font-size:28px;";
@@ -128,6 +95,7 @@ export function searchByName(query) {
         const link = document.createElement('a');
         link.href = country.maps.googleMaps;
         link.textContent = "Maps";
+        link.target = "_blank";
         maps.appendChild(link);
         infoDiv.appendChild(maps);
 
@@ -135,18 +103,9 @@ export function searchByName(query) {
         img.src = country.flags.svg;
         img.style.cssText = "max-width:100%; object-fit:contain; border-radius:8px;";
         flagDiv.appendChild(img);
-
     
         saveRecentCountry(country.name.common);
         renderRecentPills();
-
     })
     .catch(() => {});
 }
-
-searchButton.addEventListener('click', () => searchByName(searchInput.value));
-
-searchInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') 
-    searchByName(searchInput.value);
-});

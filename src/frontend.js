@@ -1,7 +1,8 @@
 export const body = document.body;
 document.title = "Country Info";
-body.style.cssText = "background-color:#f0f0f0;font-family:Arial,sans-serif;margin:0;";
+body.style.cssText = "background-color:#f0f0f0;font-family:Arial,sans-serif;margin:0; padding-top:60px;";
 
+//TODO: Add repeating elements using childclone for better performance
 export const headDiv = document.createElement('div');
 headDiv.style.cssText = "height:100px;";
 body.appendChild(headDiv);
