@@ -1,6 +1,53 @@
-import { apiList, searchResultDiv, infoDiv, flagDiv } from "./frontend.js";
+import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper } from "./frontend.js";
 
 export const listEndpoint = "https://restcountries.com/v3.1/independent";
+
+const storageKey = "recentCountries";
+const maxStorage = 5;
+
+function getRecentCountries() {
+  try {
+    const obj = localStorage.getItem(storageKey);
+    const array = JSON.parse(obj);
+    return Array.isArray(array) ? array : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveRecentCountry(name) {
+  if (!name)
+     return;
+  
+  const trimmed = name.trim();
+  
+  if (!trimmed) 
+    return;
+
+  let list = getRecentCountries();
+
+  list = list.filter(c => c.toLowerCase() !== trimmed.toLowerCase());
+
+  list.unshift(trimmed);
+
+  if (list.length > maxStorage)
+     list = list.slice(0, maxStorage);
+
+  localStorage.setItem(storageKey, JSON.stringify(list));
+}
+
+export function renderRecentPills() {
+  recentDivWrapper.innerHTML = "";
+
+  const recent = getRecentCountries();
+
+  recent.forEach(name => {
+    const pill = document.createElement('button');
+    pill.textContent = name;
+    pill.style.cssText ="margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1);"
+    recentDivWrapper.appendChild(pill);
+  });
+}
 
 export function loadCountryList() {
   fetch(listEndpoint)
@@ -62,6 +109,9 @@ export function searchByName(query) {
       img.src = country.flags.svg;
       img.style.cssText = "max-width:100%; object-fit:contain; border-radius:8px;";
       flagDiv.appendChild(img);
+
+      saveRecentCountry(country.name.common);
+      renderRecentPills();
     })
     .catch(() => {});
 }

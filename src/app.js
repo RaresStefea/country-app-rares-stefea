@@ -1,7 +1,8 @@
 import { searchButton, searchInput } from "./frontend.js";
-import { loadCountryList, searchByName } from "./backend.js";
+import { loadCountryList, searchByName, renderRecentPills } from "./backend.js";
 
 loadCountryList();
+renderRecentPills();
 
 searchButton.addEventListener('click', () => searchByName(searchInput.value));
 
