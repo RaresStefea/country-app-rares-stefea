@@ -1,10 +1,11 @@
-import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper } from "./frontend.js";
+import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper, searchButton, searchInput } from "../frontend.js";
 
 export const listEndpoint = "https://restcountries.com/v3.1/independent";
 
 const storageKey = "recentCountries";
 const maxStorage = 5;
 
+// split recents into different module same with favorite and with the OG search
 function getRecentCountries() {
   try {
     const obj = localStorage.getItem(storageKey);
@@ -56,7 +57,7 @@ export function loadCountryList() {
       data.forEach(country => {
         const li = document.createElement("li");
         li.style.cssText = "margin:0 0 12px 0; text-align:center; color:#333;";
-        li.textContent = `Country: ${country.name.common} | Capital: ${country.capital?.[0] ?? "N/A"} | Region: ${country.region}`;
+        li.textContent = `Country: ${country.name.common} | Capital: ${country.capital[0]} | Region: ${country.region}`;
         apiList.appendChild(li);
       });
     });
@@ -71,7 +72,7 @@ export function searchByName(query) {
     flagDiv.innerHTML = "";
     return;
   }
-
+  // check 3 chars full list returns *ita*
   if (q.length < 3) {
     searchResultDiv.style.display = "flex";
     infoDiv.innerHTML = "Please enter at least 3 characters.";
@@ -101,7 +102,7 @@ export function searchByName(query) {
         searchResultDiv.style.display = "flex";
         infoDiv.innerHTML = "";
         flagDiv.innerHTML = "";
-
+        //clone node instead of create element each time
         const title = document.createElement('h2');
         title.textContent = country.name.common;
         title.style.cssText = "margin:0; font-size:28px;";
@@ -142,3 +143,10 @@ export function searchByName(query) {
     })
     .catch(() => {});
 }
+
+searchButton.addEventListener('click', () => searchByName(searchInput.value));
+
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') 
+    searchByName(searchInput.value);
+});
