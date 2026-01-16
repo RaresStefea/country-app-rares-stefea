@@ -72,46 +72,73 @@ export function searchByName(query) {
     return;
   }
 
+  if (q.length < 3) {
+    searchResultDiv.style.display = "flex";
+    infoDiv.innerHTML = "Please enter at least 3 characters.";
+    flagDiv.innerHTML = "";
+    return;
+  }
+
   searchResultDiv.style.display = "flex";
   infoDiv.innerHTML = "Loading...";
   flagDiv.innerHTML = "";
 
-  const endpoint = `https://restcountries.com/v3.1/name/${encodeURIComponent(q)}?fullText=true&fields=name,capital,region,flags`;
+  const endpoint = `https://restcountries.com/v3.1/name/${encodeURIComponent(q)}?fields=flags,name,capital,population,languages,currencies,maps`;
 
   fetch(endpoint)
     .then(response => {
-      if (!response.ok) {
-        searchResultDiv.style.display = "flex";
-        infoDiv.innerHTML = "Country not found.";
-        flagDiv.innerHTML = "";
-        return Promise.reject("Not found");
-      }
-      return response.json();
+        if (!response.ok) {
+            searchResultDiv.style.display = "flex";
+            infoDiv.innerHTML = "Country not found.";
+            flagDiv.innerHTML = "";
+            return Promise.reject("Not found");
+        }
+        return response.json();
     })
     .then(data => {
-      const country = data[0];
+        const country = data[0];
 
-      searchResultDiv.style.display = "flex";
-      infoDiv.innerHTML = "";
-      flagDiv.innerHTML = "";
+        searchResultDiv.style.display = "flex";
+        infoDiv.innerHTML = "";
+        flagDiv.innerHTML = "";
 
-      const title = document.createElement('h2');
-      title.textContent = country.name.common;
-      title.style.cssText = "margin:0; font-size:28px;";
+        const title = document.createElement('h2');
+        title.textContent = country.name.common;
+        title.style.cssText = "margin:0; font-size:28px;";
+        infoDiv.appendChild(title);
 
-      const p = document.createElement('p');
-      p.textContent = `Capital: ${country.capital?.[0] ?? "N/A"} | Region: ${country.region}`;
+        const capital = document.createElement('p');
+        capital.textContent = `Capital: ${Object.values(country.capital).join(", ")}`;
+        infoDiv.appendChild(capital);
 
-      infoDiv.appendChild(title);
-      infoDiv.appendChild(p);
+        const population = document.createElement('p');
+        population.textContent = `Population: ${new Intl.NumberFormat().format(country.population)}`;
+        infoDiv.appendChild(population);
+        
+        const languages = document.createElement('p');
+        languages.textContent = `Languages: ${Object.values(country.languages).join(", ")}`;
+        infoDiv.appendChild(languages);
 
-      const img = document.createElement('img');
-      img.src = country.flags.svg;
-      img.style.cssText = "max-width:100%; object-fit:contain; border-radius:8px;";
-      flagDiv.appendChild(img);
+        const currencies = document.createElement('p');
+        currencies.textContent = `Currencies: ${Object.values(country.currencies).map(c => c.name ).join(", ")}`;
+        infoDiv.appendChild(currencies);
 
-      saveRecentCountry(country.name.common);
-      renderRecentPills();
+        const maps = document.createElement('p');
+        const link = document.createElement('a');
+        link.href = country.maps.googleMaps;
+        link.textContent = "Maps";
+        maps.appendChild(link);
+        infoDiv.appendChild(maps);
+
+        const img = document.createElement('img');
+        img.src = country.flags.svg;
+        img.style.cssText = "max-width:100%; object-fit:contain; border-radius:8px;";
+        flagDiv.appendChild(img);
+
+    
+        saveRecentCountry(country.name.common);
+        renderRecentPills();
+
     })
     .catch(() => {});
 }
