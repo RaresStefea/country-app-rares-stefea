@@ -5,4 +5,4 @@
 - Search on at least 3 characters typed.
 - Create favorite button for search result card
 - Implement functionality to expand each favourited country and display more information about it (fetch data from an API once you expand a country).
-- Refactor code into modules.
+- ~~Refactor code into modules.~~
