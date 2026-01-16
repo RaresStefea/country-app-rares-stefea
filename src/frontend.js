@@ -26,6 +26,14 @@ searchButton.textContent = "Search";
 searchButton.style.cssText = "height:36px; padding:0 16px; background-color:#007bff; border:none; color:white; border-radius:10px; cursor:pointer;";
 searchDiv.appendChild(searchButton);
 
+export const recentDiv = document.createElement('div');
+recentDiv.style.cssText = "height:40px; display:flex; justify-content:center;";
+body.appendChild(recentDiv);
+
+export const recentDivWrapper = document.createElement('div')
+recentDivWrapper.style.cssText= "display: flex; gap:10px;"
+recentDiv.appendChild(recentDivWrapper);
+
 export const searchResultDiv = document.createElement('div');
 searchResultDiv.style.cssText = "display:none; justify-content:center; padding:24px;";
 body.appendChild(searchResultDiv);
