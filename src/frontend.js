@@ -24,9 +24,9 @@ function make(tag, elementOptions = {}) {
     return dummy;
 }
 
-export function clone(elementToClone, elementOptions = {}) {
+export function clone(elementToClone, elementOptions = {}, isDeep = true) {
   
-    const copy = elementToClone.cloneNode(true);
+    const copy = elementToClone.cloneNode(isDeep);
   
     if (elementOptions.cssText) 
         copy.style.cssText = elementOptions.cssText;

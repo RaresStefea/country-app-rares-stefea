@@ -8,7 +8,7 @@ export function renderRecentPills() {
   const recent = getRecentCountries();
 
   recent.forEach(name => {
-    const pill = clone(templateButton,{text:`${name}`, cssText:"margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1); cursor:pointer;"});
+    const pill = clone(templateButton,{text:`${name}`, cssText:"margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1); cursor:pointer;"},false);
     recentDivWrapper.appendChild(pill);
   });
 }
@@ -18,7 +18,7 @@ export function loadCountryList() {
     .then(r => r.json())
     .then(data => {
       data.forEach(country => {
-        const li = clone(templateLi,{text:`Country: ${country.name.common} | Capital: ${country.capital?.[0] || 'N/A'} | Region: ${country.region}` ,cssText:"margin:0 0 12px 0; text-align:center; color:#333;"});
+        const li = clone(templateLi,{text:`Country: ${country.name.common} | Capital: ${country.capital?.[0] || 'N/A'} | Region: ${country.region}` ,cssText:"margin:0 0 12px 0; text-align:center; color:#333;"},false);
         apiList.appendChild(li);
       });
     });
