@@ -1,60 +1,90 @@
 export const body = document.body;
 document.title = "Country Info";
-body.style.cssText = "background-color:#f0f0f0;font-family:Arial,sans-serif;margin:0; padding-top:60px;";
+body.style.cssText = "background-color:#f0f0f0;font-family:Arial,sans-serif;margin:0; padding-top:40px;";
 
-//TODO: Add repeating elements using childclone for better performance
-export const headDiv = document.createElement('div');
-headDiv.style.cssText = "height:100px;";
+const master = document.createElement('div');
+master.style.display = 'none';
+body.appendChild(master);
+
+function make(tag, elementOptions = {}) {
+  
+    const dummy = document.createElement(tag);
+  
+    if (elementOptions.cssText)
+        dummy.style.cssText = elementOptions.cssText;
+
+    if (elementOptions.text)
+        dummy.textContent = elementOptions.text;
+  
+    if (elementOptions.proprieties)
+        Object.assign(dummy, elementOptions.proprieties);
+  
+    master.appendChild(dummy);
+  
+    return dummy;
+}
+
+export function clone(elementToClone, elementOptions = {}) {
+  
+    const copy = elementToClone.cloneNode(true);
+  
+    if (elementOptions.cssText) 
+        copy.style.cssText = elementOptions.cssText;
+  
+    if (elementOptions.text)
+    copy.textContent = elementOptions.text;
+  
+    if (elementOptions.proprieties)
+    Object.assign(copy, elementOptions.proprieties);
+  
+    return copy;
+}
+
+const templateDiv = make('div');
+const templateHeader = make('header');
+const templateInput = make('input', { proprieties: { type: 'text' } });
+export const templateButton = make('button');
+const templateUl = make('ul');
+export const templateP = make('p');
+export const templateTitle2 = make('h2');
+export const templateImage = make('img');
+export const templateLi = make('li');
+
+export const headDiv = clone(templateDiv, { cssText: 'height:100px;' });
 body.appendChild(headDiv);
 
-export const mainHead = document.createElement('header');
-mainHead.textContent = "Country Info";
-mainHead.style.cssText = "font-size:50px;text-align:center;margin:0;";
+export const mainHead = clone(templateHeader, { text: 'Country Info', cssText: 'font-size:50px;text-align:center;margin:0;' });
 headDiv.appendChild(mainHead);
 
-export const searchDiv = document.createElement('div');
-searchDiv.style.cssText = "height:80px; display:flex; justify-content:center; align-items:center; gap:10px;";
+export const searchDiv = clone(templateDiv, { cssText: 'height:80px; display:flex; justify-content:center; align-items:center; gap:10px;' });
 body.appendChild(searchDiv);
 
-export const searchInput = document.createElement('input');
-searchInput.type = "text";
-searchInput.placeholder = "Full country name:";
-searchInput.style.cssText = "width:400px; height:36px; padding:0 12px; border-radius:10px;";
+export const searchInput = clone(templateInput, { proprieties: { placeholder: 'Full country name:' }, cssText: 'width:400px; height:36px; padding:0 12px; border-radius:10px;' });
 searchDiv.appendChild(searchInput);
 
-export const searchButton = document.createElement('button');
-searchButton.textContent = "Search";
-searchButton.style.cssText = "height:36px; padding:0 16px; background-color:#007bff; border:none; color:white; border-radius:10px; cursor:pointer;";
+export const searchButton = clone(templateButton, { text: 'Search', cssText: 'height:36px; padding:0 16px; background-color:#007bff; border:none; color:white; border-radius:10px; cursor:pointer;' });
 searchDiv.appendChild(searchButton);
 
-export const recentDiv = document.createElement('div');
-recentDiv.style.cssText = "height:40px; display:flex; justify-content:center;";
+export const recentDiv = clone(templateDiv, { cssText: 'height:40px; display:flex; justify-content:center;' });
 body.appendChild(recentDiv);
 
-export const recentDivWrapper = document.createElement('div')
-recentDivWrapper.style.cssText= "display: flex; gap:10px;"
+export const recentDivWrapper = clone(templateDiv, { cssText: 'display: flex; gap:10px;' });
 recentDiv.appendChild(recentDivWrapper);
 
-export const searchResultDiv = document.createElement('div');
-searchResultDiv.style.cssText = "display:none; justify-content:center; padding:24px;";
+export const searchResultDiv = clone(templateDiv, { cssText: 'display:none; justify-content:center; padding:24px;' });
 body.appendChild(searchResultDiv);
 
-export const searchResultWrapper = document.createElement('div');
-searchResultWrapper.style.cssText = "display:flex; gap:24px; background:white; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:16px;";
+export const searchResultWrapper = clone(templateDiv, { cssText: 'display:flex; gap:24px; background:white; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:16px;' });
 searchResultDiv.appendChild(searchResultWrapper);
 
-export const infoDiv = document.createElement('div');
-infoDiv.style.cssText = "flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;";
+export const infoDiv = clone(templateDiv, { cssText: 'flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;' });
 searchResultWrapper.appendChild(infoDiv);
 
-export const flagDiv = document.createElement('div');
-flagDiv.style.cssText = "width:300px; display:flex; justify-content:center; align-items:center;";
+export const flagDiv = clone(templateDiv, { cssText: 'width:300px; display:flex; justify-content:center; align-items:center;' });
 searchResultWrapper.appendChild(flagDiv);
 
-export const apiResultDiv = document.createElement('div');
-apiResultDiv.style.cssText = "padding:16px 24px;";
+export const apiResultDiv = clone(templateDiv, { cssText: 'padding:16px 24px;' });
 body.appendChild(apiResultDiv);
 
-export const apiList = document.createElement('ul');
-apiList.style.cssText = "padding-left:0; margin:0; list-style:none;";
+export const apiList = clone(templateUl, { cssText: 'padding-left:0; margin:0; list-style:none;' });
 apiResultDiv.appendChild(apiList);

@@ -1,18 +1,14 @@
-import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper } from "../frontend.js";
+import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper, clone, templateP, templateTitle2, templateImage, templateLi, templateButton } from "../frontend.js";
 import { getRecentCountries, saveRecentCountry } from "./recent-storing.js";
 
 export const listEndpoint = "https://restcountries.com/v3.1/independent";
 
-
-//TODO: Error checking for fetches
 export function renderRecentPills() {
   recentDivWrapper.innerHTML = "";
   const recent = getRecentCountries();
 
   recent.forEach(name => {
-    const pill = document.createElement('button');
-    pill.textContent = name;
-    pill.style.cssText ="margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1); cursor:pointer;";
+    const pill = clone(templateButton,{text:`${name}`, cssText:"margin:4px; padding:6px 12px; border-radius:30px; border:1px solid grey; background: white; box-shadow:0 4px 12px rgba(0,0,0,.1); cursor:pointer;"});
     recentDivWrapper.appendChild(pill);
   });
 }
@@ -22,9 +18,7 @@ export function loadCountryList() {
     .then(r => r.json())
     .then(data => {
       data.forEach(country => {
-        const li = document.createElement("li");
-        li.style.cssText = "margin:0 0 12px 0; text-align:center; color:#333;";
-        li.textContent = `Country: ${country.name.common} | Capital: ${country.capital?.[0] || 'N/A'} | Region: ${country.region}`;
+        const li = clone(templateLi,{text:`Country: ${country.name.common} | Capital: ${country.capital?.[0] || 'N/A'} | Region: ${country.region}` ,cssText:"margin:0 0 12px 0; text-align:center; color:#333;"});
         apiList.appendChild(li);
       });
     });
@@ -70,25 +64,19 @@ export function searchByName(query) {
         infoDiv.innerHTML = "";
         flagDiv.innerHTML = "";
 
-        const title = document.createElement('h2');
-        title.textContent = country.name.common;
-        title.style.cssText = "margin:0; font-size:28px;";
+        const title = clone(templateTitle2,{text:`${country.name.common}`, cssText:"margin:0; font-size:28px;"});
         infoDiv.appendChild(title);
 
-        const capital = document.createElement('p');
-        capital.textContent = `Capital: ${Object.values(country.capital).join(", ")}`;
+        const capital = clone(templateP, {text: `Capital: ${Object.values(country.capital || {}).join(", ")}`});
         infoDiv.appendChild(capital);
 
-        const population = document.createElement('p');
-        population.textContent = `Population: ${new Intl.NumberFormat().format(country.population)}`;
+        const population = clone(templateP, { text: `Population: ${new Intl.NumberFormat().format(country.population)}`});
         infoDiv.appendChild(population);
         
-        const languages = document.createElement('p');
-        languages.textContent = `Languages: ${Object.values(country.languages).join(", ")}`;
+        const languages = clone(templateP, {text: `Languages: ${Object.values(country.languages || {}).join(", ")}`});
         infoDiv.appendChild(languages);
 
-        const currencies = document.createElement('p');
-        currencies.textContent = `Currencies: ${Object.values(country.currencies).map(c => c.name ).join(", ")}`;
+        const currencies = clone(templateP, {text: `Currencies: ${Object.values(country.currencies || {}).map(c => c.name ).join(", ")}`});
         infoDiv.appendChild(currencies);
 
         const maps = document.createElement('p');
@@ -99,9 +87,7 @@ export function searchByName(query) {
         maps.appendChild(link);
         infoDiv.appendChild(maps);
 
-        const img = document.createElement('img');
-        img.src = country.flags.svg;
-        img.style.cssText = "max-width:100%; object-fit:contain; border-radius:8px;";
+        const img = clone(templateImage,{proprieties: {src: country.flags.svg}, cssText: "max-width:100%; object-fit:contain; border-radius:8px;"});
         flagDiv.appendChild(img);
     
         saveRecentCountry(country.name.common);
