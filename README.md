@@ -5,8 +5,7 @@
 
 # TODOS
 
-- Add more in-depth error catching.
-- Instead of the first search result , create a list that would be navigable with arrow keys.
+- ~~Add more in-depth error catching.~~
 - ~~Add a screenshot of the webpage~~
 - ~~Create frontend templates~~
 - ~~More in depth error handling.~~
