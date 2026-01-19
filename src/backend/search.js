@@ -69,16 +69,16 @@ export function searchByName(query) {
         const title = clone(templateTitle2,{text:`${country.name.common}`, cssText:"margin:0; font-size:28px;"});
         infoDiv.appendChild(title);
 
-        const capital = clone(templateP, {text: `Capital: ${Object.values(country.capital || {}).join(", ")}`});
+        const capital = clone(templateP, {text: `Capital: ${Object.values(country.capital || {}).join(", ")}`, cssText:"margin:2px 0; line-height:1.2;"});
         infoDiv.appendChild(capital);
 
-        const population = clone(templateP, { text: `Population: ${new Intl.NumberFormat().format(country.population)}`});
+        const population = clone(templateP, { text: `Population: ${new Intl.NumberFormat().format(country.population)}`, cssText:"margin:2px 0; line-height:1.2;"});
         infoDiv.appendChild(population);
         
-        const languages = clone(templateP, {text: `Languages: ${Object.values(country.languages || {}).join(", ")}`});
+        const languages = clone(templateP, {text: `Languages: ${Object.values(country.languages || {}).join(", ")}`, cssText:"margin:2px 0; line-height:1.2;"});
         infoDiv.appendChild(languages);
 
-        const currencies = clone(templateP, {text: `Currencies: ${Object.values(country.currencies || {}).map(c => c.name ).join(", ")}`});
+        const currencies = clone(templateP, {text: `Currencies: ${Object.values(country.currencies || {}).map(c => c.name ).join(", ")}`, cssText:"margin:2px 0; line-height:1.2;"});
         infoDiv.appendChild(currencies);
 
         const maps = document.createElement('p');
