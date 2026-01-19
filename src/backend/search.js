@@ -1,5 +1,6 @@
 import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper, clone, templateP, templateTitle2, templateImage, templateLi, templateButton, favoriteDiv } from "../frontend.js";
 import { getRecentCountries, saveRecentCountry } from "./recent-storing.js";
+import { getFavoriteCountries,saveFavoriteCountry,removeFavoriteCountry,renderFavoritePills} from "./favorite.js";
 
 export const listEndpoint = "https://restcountries.com/v3.1/independent";
 
@@ -97,8 +98,6 @@ export function searchByName(query) {
             favoritePressed.style.backgroundColor = '#fbe701';
         };
 
-        //infoDiv.appendChild(favoritePressed);
-
         const favoriteUnpressed  = clone(templateButton, {text: 'Favorite' , cssText: 'width:100%;height:25px;padding:0 16px;background-color:white;border:2px solid #fbe701;color:#fbe701;border-radius:10px;cursor:pointer;transition:all 0.25s ease;'});
 
         favoriteUnpressed.onmouseover = () => {
@@ -109,6 +108,27 @@ export function searchByName(query) {
             favoriteUnpressed.style.backgroundColor = 'white';
             favoriteUnpressed.style.color = '#fbe701';
         };
+
+        const isFav = getFavoriteCountries().includes(country.name.common);
+
+        favoritePressed.style.display   = isFav ? 'block' : 'none';
+        favoriteUnpressed.style.display = isFav ? 'none'  : 'block';
+
+        favoriteUnpressed.onclick = () => {
+          saveFavoriteCountry(country.name.common);
+          favoriteUnpressed.style.display = 'none';
+          favoritePressed.style.display   = 'block';
+          renderFavoritePills();
+        };
+
+        favoritePressed.onclick = () => {
+          removeFavoriteCountry(country.name.common);
+          favoritePressed.style.display   = 'none';
+          favoriteUnpressed.style.display = 'block';
+          renderFavoritePills();
+        };
+
+        favoriteDiv.appendChild(favoritePressed);
         favoriteDiv.appendChild(favoriteUnpressed);
 
         const img = clone(templateImage,{proprieties: {src: country.flags.svg}, cssText: "max-width:100%; object-fit:contain; border-radius:8px;"});

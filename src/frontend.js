@@ -56,6 +56,12 @@ body.appendChild(headDiv);
 export const mainHead = clone(templateHeader, { text: 'Country Info', cssText: 'font-size:50px;text-align:center;margin:0;' });
 headDiv.appendChild(mainHead);
 
+export const favorite2Div = clone(templateDiv, { cssText: 'height:40px; display:flex; justify-content:center;' });
+body.appendChild(favorite2Div);
+
+export const favoriteDivWrapper = clone(templateDiv, { cssText: 'display: flex; gap:10px;' });
+favorite2Div.appendChild(favoriteDivWrapper);
+
 export const searchDiv = clone(templateDiv, { cssText: 'height:80px; display:flex; justify-content:center; align-items:center; gap:10px;' });
 body.appendChild(searchDiv);
 
