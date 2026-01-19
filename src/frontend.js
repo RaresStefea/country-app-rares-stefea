@@ -56,6 +56,12 @@ body.appendChild(headDiv);
 export const mainHead = clone(templateHeader, { text: 'Country Info', cssText: 'font-size:50px;text-align:center;margin:0;' });
 headDiv.appendChild(mainHead);
 
+export const favorite2Div = clone(templateDiv, { cssText: 'height:40px; display:flex; justify-content:center;' });
+body.appendChild(favorite2Div);
+
+export const favoriteDivWrapper = clone(templateDiv, { cssText: 'display: flex; gap:10px;' });
+favorite2Div.appendChild(favoriteDivWrapper);
+
 export const searchDiv = clone(templateDiv, { cssText: 'height:80px; display:flex; justify-content:center; align-items:center; gap:10px;' });
 body.appendChild(searchDiv);
 
@@ -74,14 +80,17 @@ recentDiv.appendChild(recentDivWrapper);
 export const searchResultDiv = clone(templateDiv, { cssText: 'display:none; justify-content:center; padding:24px;' });
 body.appendChild(searchResultDiv);
 
-export const searchResultWrapper = clone(templateDiv, { cssText: 'display:flex; gap:24px; background:white; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,.1); padding:16px;' });
+export const searchResultWrapper = clone(templateDiv, { cssText: 'display:grid;grid-template-columns: 1fr 300px;gap:24px;background:white;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:16px;align-items:start;'});
 searchResultDiv.appendChild(searchResultWrapper);
 
-export const infoDiv = clone(templateDiv, { cssText: 'flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;' });
+export const infoDiv = clone(templateDiv, { cssText: 'grid-column: 1;display:flex;flex-direction:column;justify-content:center;gap:8px;' });
 searchResultWrapper.appendChild(infoDiv);
 
-export const flagDiv = clone(templateDiv, { cssText: 'width:300px; display:flex; justify-content:center; align-items:center;' });
+export const flagDiv = clone(templateDiv, { cssText: 'grid-column: 2;width:300px;display:flex;justify-content:center;align-items:center;' });
 searchResultWrapper.appendChild(flagDiv);
+
+export const favoriteDiv = clone(templateDiv, { cssText: 'grid-column: 1 / -1;display:flex; align-items:stretch;' })
+searchResultWrapper.appendChild(favoriteDiv)
 
 export const apiResultDiv = clone(templateDiv, { cssText: 'padding:16px 24px;' });
 body.appendChild(apiResultDiv);
