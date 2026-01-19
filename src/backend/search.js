@@ -1,4 +1,4 @@
-import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper, clone, templateP, templateTitle2, templateImage, templateLi, templateButton } from "../frontend.js";
+import { apiList, searchResultDiv, infoDiv, flagDiv, recentDivWrapper, clone, templateP, templateTitle2, templateImage, templateLi, templateButton, favoriteDiv } from "../frontend.js";
 import { getRecentCountries, saveRecentCountry } from "./recent-storing.js";
 
 export const listEndpoint = "https://restcountries.com/v3.1/independent";
@@ -63,6 +63,7 @@ export function searchByName(query) {
         searchResultDiv.style.display = "flex";
         infoDiv.innerHTML = "";
         flagDiv.innerHTML = "";
+        favoriteDiv.innerHTML = "";
 
         const title = clone(templateTitle2,{text:`${country.name.common}`, cssText:"margin:0; font-size:28px;"});
         infoDiv.appendChild(title);
@@ -86,6 +87,29 @@ export function searchByName(query) {
         link.target = "_blank";
         maps.appendChild(link);
         infoDiv.appendChild(maps);
+
+        const favoritePressed  = clone(templateButton, {text: 'Favorite' , cssText: 'width:100%;height:25px;padding:0 16px;background-color:#fbe701;border:none;color:white;border-radius:10px;cursor:pointer;transition:all 0.25s ease;'});
+
+        favoritePressed.onmouseover = () => {
+            favoritePressed.style.backgroundColor = '#e3cd00';
+        };
+        favoritePressed.onmouseout = () => {
+            favoritePressed.style.backgroundColor = '#fbe701';
+        };
+
+        //infoDiv.appendChild(favoritePressed);
+
+        const favoriteUnpressed  = clone(templateButton, {text: 'Favorite' , cssText: 'width:100%;height:25px;padding:0 16px;background-color:white;border:2px solid #fbe701;color:#fbe701;border-radius:10px;cursor:pointer;transition:all 0.25s ease;'});
+
+        favoriteUnpressed.onmouseover = () => {
+            favoriteUnpressed.style.backgroundColor = '#fbe701';
+            favoriteUnpressed.style.color = 'white';
+        };
+        favoriteUnpressed.onmouseout = () => {
+            favoriteUnpressed.style.backgroundColor = 'white';
+            favoriteUnpressed.style.color = '#fbe701';
+        };
+        favoriteDiv.appendChild(favoriteUnpressed);
 
         const img = clone(templateImage,{proprieties: {src: country.flags.svg}, cssText: "max-width:100%; object-fit:contain; border-radius:8px;"});
         flagDiv.appendChild(img);
